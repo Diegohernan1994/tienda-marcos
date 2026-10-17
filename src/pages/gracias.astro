@@ -115,7 +115,7 @@ const configJson = JSON.stringify(STORE_CONFIG);
     let waUrl = waUrlParam || orderData?.waUrl;
     if (!waUrl) {
       const fallbackMsg = `👋 ¡Hola! Quiero hacer el pedido #${finalOrderId} por un total de $${finalTotal.toLocaleString('es-AR')} ($${finalTransferTotal.toLocaleString('es-AR')} con 15% OFF transferencia). ¿Me pasan los datos para coordinar el pago y envío? ¡Gracias!`;
-      waUrl = `https://wa.me/${CONFIG.whatsappNumber}?text=${encodeURIComponent(fallbackMsg)}`;
+      waUrl = `https://api.whatsapp.com/send?phone=${CONFIG.whatsappNumber}&text=${encodeURIComponent(fallbackMsg)}`;
     }
 
     if (btnWhatsappRedirect) {

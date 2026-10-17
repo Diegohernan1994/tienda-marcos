@@ -33,7 +33,7 @@ const configJson = JSON.stringify(STORE_CONFIG);
 
       <!-- Botón de chat directo -->
       <a 
-        href={`https://wa.me/${STORE_CONFIG.whatsappNumber}?text=Hola!%20Tengo%20una%20consulta%20sobre%20las%20almohadas%20viscoel%C3%A1sticas%20en%20C%C3%B3rdoba`}
+        href={`https://api.whatsapp.com/send?phone=${STORE_CONFIG.whatsappNumber}&text=Hola!%20Tengo%20una%20consulta%20sobre%20las%20almohadas%20viscoel%C3%A1sticas%20en%20C%C3%B3rdoba`}
         target="_blank"
         rel="noopener noreferrer"
         class="bg-[#25D366] hover:bg-[#20ba5a] active:scale-95 text-white text-[11px] font-bold px-2.5 py-1.5 rounded-full flex items-center gap-1 shadow-sm transition-all flex-shrink-0"
@@ -1008,7 +1008,7 @@ ${shippingText}
 
 ¿Me pasarías los datos para coordinar el pago y la entrega? ¡Muchas gracias!`;
 
-      const waUrl = `https://wa.me/${CONFIG.whatsappNumber}?text=${encodeURIComponent(message)}`;
+      const waUrl = `https://api.whatsapp.com/send?phone=${CONFIG.whatsappNumber}&text=${encodeURIComponent(message)}`;
 
       const orderData = {
         orderId,
@@ -1077,7 +1077,7 @@ ${shippingText}
 
 ¿Me pasarías los datos para coordinar el pago y el despacho? ¡Muchas gracias!`;
 
-      const waUrl = `https://wa.me/${CONFIG.whatsappNumber}?text=${encodeURIComponent(message)}`;
+      const waUrl = `https://api.whatsapp.com/send?phone=${CONFIG.whatsappNumber}&text=${encodeURIComponent(message)}`;
 
       const orderData = {
         orderId,
