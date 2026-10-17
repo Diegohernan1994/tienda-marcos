@@ -23,7 +23,9 @@ const hasPixel = pixelId && pixelId !== "TU_META_PIXEL_ID";
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛏️</text></svg>" />
+    <link rel="icon" type="image/jpeg" href="/favicon.jpg" />
+    <link rel="apple-touch-icon" href="/logo.jpg" />
+    <link rel="manifest" href="/manifest.json" />
     
     <title>{title}</title>
     <meta name="description" content={description} />
@@ -33,6 +35,7 @@ const hasPixel = pixelId && pixelId !== "TU_META_PIXEL_ID";
     <meta property="og:type" content="website" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
+    <meta property="og:image" content="/logo.jpg" />
     <meta property="og:site_name" content={STORE_CONFIG.name} />
 
     <!-- Font Awesome Icons -->

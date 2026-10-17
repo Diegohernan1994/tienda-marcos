@@ -11,17 +11,24 @@ const configJson = JSON.stringify(STORE_CONFIG);
   <!-- HEADER LIMPIO ESTILO WHATSAPP BUSINESS -->
   <header class="sticky top-0 z-40 bg-[#008069] text-white shadow-md">
     <div class="max-w-md mx-auto px-4 py-3 flex items-center justify-between gap-3">
-      <div class="min-w-0 flex-1">
-        <div class="flex items-center gap-1.5">
-          <h1 class="font-bold text-sm sm:text-base leading-tight truncate">
-            {STORE_CONFIG.name}
-          </h1>
-          <i class="fa-solid fa-circle-check text-emerald-300 text-xs flex-shrink-0" title="Verificado"></i>
+      <div class="flex items-center gap-2.5 min-w-0 flex-1">
+        <img 
+          src="/logo.jpg" 
+          alt={STORE_CONFIG.name} 
+          class="w-10 h-10 rounded-full object-cover bg-black border-2 border-white/80 flex-shrink-0 shadow-sm"
+        />
+        <div class="min-w-0 flex-1">
+          <div class="flex items-center gap-1.5">
+            <h1 class="font-bold text-sm sm:text-base leading-tight truncate">
+              {STORE_CONFIG.name}
+            </h1>
+            <i class="fa-solid fa-circle-check text-emerald-300 text-xs flex-shrink-0" title="Verificado"></i>
+          </div>
+          <p class="text-[11px] text-emerald-100 flex items-center gap-1 truncate mt-0.5">
+            <span class="inline-block w-1.5 h-1.5 rounded-full bg-emerald-300 animate-pulse"></span>
+            Ciudad de Córdoba • En línea
+          </p>
         </div>
-        <p class="text-[11px] text-emerald-100 flex items-center gap-1 truncate mt-0.5">
-          <span class="inline-block w-1.5 h-1.5 rounded-full bg-emerald-300 animate-pulse"></span>
-          Ciudad de Córdoba • En línea
-        </p>
       </div>
 
       <!-- Botón de chat directo -->
