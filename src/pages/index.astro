@@ -8,25 +8,25 @@ const configJson = JSON.stringify(STORE_CONFIG);
 ---
 
 <Layout title={`${STORE_CONFIG.name} | Catálogo Oficial`}>
-  <!-- HEADER LIMPIO ESTILO WHATSAPP BUSINESS -->
+  <!-- HEADER LIMPIO ESTILO WHATSAPP BUSINESS ADAPTADO A PANTALLAS PEQUEÑAS -->
   <header class="sticky top-0 z-40 bg-[#008069] text-white shadow-md">
-    <div class="max-w-md mx-auto px-4 py-3 flex items-center justify-between gap-3">
-      <div class="flex items-center gap-2.5 min-w-0 flex-1">
+    <div class="max-w-md mx-auto px-3 py-2 sm:px-4 sm:py-2.5 flex items-center justify-between gap-2">
+      <div class="flex items-center gap-2 min-w-0 flex-1">
         <img 
           src="/logo.jpg" 
           alt={STORE_CONFIG.name} 
-          class="w-10 h-10 rounded-full object-cover bg-black border-2 border-white/80 flex-shrink-0 shadow-sm"
+          class="w-9 h-9 sm:w-10 sm:h-10 rounded-full object-cover bg-black border-2 border-white/80 flex-shrink-0 shadow-sm"
         />
         <div class="min-w-0 flex-1">
-          <div class="flex items-center gap-1.5">
-            <h1 class="font-bold text-sm sm:text-base leading-tight truncate">
+          <div class="flex items-center gap-1">
+            <h1 class="font-bold text-xs sm:text-sm md:text-base leading-tight truncate">
               {STORE_CONFIG.name}
             </h1>
-            <i class="fa-solid fa-circle-check text-emerald-300 text-xs flex-shrink-0" title="Verificado"></i>
+            <i class="fa-solid fa-circle-check text-emerald-300 text-[10px] sm:text-xs flex-shrink-0" title="Verificado"></i>
           </div>
-          <p class="text-[11px] text-emerald-100 flex items-center gap-1 truncate mt-0.5">
-            <span class="inline-block w-1.5 h-1.5 rounded-full bg-emerald-300 animate-pulse"></span>
-            Ciudad de Córdoba • En línea
+          <p class="text-[10px] sm:text-[11px] text-emerald-100 flex items-center gap-1 truncate mt-0.5">
+            <span class="inline-block w-1.5 h-1.5 rounded-full bg-emerald-300 animate-pulse flex-shrink-0"></span>
+            <span class="truncate">Ciudad de Córdoba • En línea</span>
           </p>
         </div>
       </div>
@@ -36,7 +36,7 @@ const configJson = JSON.stringify(STORE_CONFIG);
         href={`https://wa.me/${STORE_CONFIG.whatsappNumber}?text=Hola!%20Tengo%20una%20consulta%20sobre%20las%20almohadas%20viscoel%C3%A1sticas%20en%20C%C3%B3rdoba`}
         target="_blank"
         rel="noopener noreferrer"
-        class="bg-[#25D366] hover:bg-[#20ba5a] active:scale-95 text-white text-xs font-bold px-3.5 py-1.5 rounded-full flex items-center gap-1.5 shadow-sm transition-all flex-shrink-0"
+        class="bg-[#25D366] hover:bg-[#20ba5a] active:scale-95 text-white text-[11px] font-bold px-2.5 py-1.5 rounded-full flex items-center gap-1 shadow-sm transition-all flex-shrink-0"
       >
         <i class="fa-brands fa-whatsapp text-sm"></i>
         <span>Chat</span>
@@ -45,50 +45,50 @@ const configJson = JSON.stringify(STORE_CONFIG);
   </header>
 
   <!-- CONTENIDO PRINCIPAL -->
-  <main class="max-w-md mx-auto px-3.5 py-3 pb-24 space-y-3.5">
+  <main class="max-w-md mx-auto px-2.5 sm:px-3.5 py-3 pb-28 space-y-3">
     
     <!-- Banner de Información y Envíos en Córdoba -->
-    <div class="bg-gradient-to-r from-emerald-800 to-teal-900 rounded-2xl p-3.5 text-white shadow-sm border border-emerald-700/50">
-      <h2 class="text-sm sm:text-base font-bold leading-snug">
+    <div class="bg-gradient-to-r from-emerald-800 to-teal-900 rounded-2xl p-3 sm:p-3.5 text-white shadow-sm border border-emerald-700/50">
+      <h2 class="text-xs sm:text-base font-bold leading-snug">
         Almohadas Viscoelásticas Inteligentes
       </h2>
-      <p class="text-[11px] text-emerald-100 mt-0.5 leading-tight">
+      <p class="text-[10px] sm:text-[11px] text-emerald-100 mt-0.5 leading-tight">
         Espuma con memoria termosensible. Alivia contracturas y dolores cervicales.
       </p>
 
-      <!-- Resumen de Envíos en Córdoba -->
-      <div class="mt-2 pt-2 border-t border-emerald-700/60 flex items-center justify-between text-[11px] text-emerald-200">
-        <span><i class="fa-solid fa-location-dot text-yellow-300 mr-1"></i> Córdoba Capital</span>
-        <button id="btn-open-shipping-info" type="button" class="underline font-bold text-yellow-300 hover:text-yellow-200">
+      <!-- Resumen de Envíos en Córdoba (con wrap para evitar desborde en 320px) -->
+      <div class="mt-2 pt-2 border-t border-emerald-700/60 flex flex-wrap items-center justify-between gap-1 text-[10px] sm:text-[11px] text-emerald-200">
+        <span class="truncate"><i class="fa-solid fa-location-dot text-yellow-300 mr-1"></i> Córdoba Capital</span>
+        <button id="btn-open-shipping-info" type="button" class="underline font-bold text-yellow-300 hover:text-yellow-200 flex-shrink-0">
           Ver tarifas de envío
         </button>
       </div>
     </div>
 
-    <!-- Filtro de Categorías -->
-    <div class="flex items-center gap-1.5 overflow-x-auto py-1 scrollbar-none text-xs font-semibold -mx-1 px-1">
-      <button class="cat-filter active px-3 py-1.5 rounded-full bg-[#008069] text-white whitespace-nowrap shadow-sm text-xs" data-category="all">
+    <!-- Filtro de Categorías (scroll lateral fluido) -->
+    <div class="flex items-center gap-1.5 overflow-x-auto py-1 scrollbar-none text-[11px] sm:text-xs font-semibold -mx-2.5 px-2.5 sm:-mx-3.5 sm:px-3.5">
+      <button class="cat-filter active px-2.5 sm:px-3 py-1.5 rounded-full bg-[#008069] text-white whitespace-nowrap shadow-sm text-xs flex-shrink-0" data-category="all">
         Todos ({PRODUCTS.length})
       </button>
-      <button class="cat-filter px-3 py-1.5 rounded-full bg-white text-slate-700 border border-slate-200 whitespace-nowrap text-xs" data-category="packs">
+      <button class="cat-filter px-2.5 sm:px-3 py-1.5 rounded-full bg-white text-slate-700 border border-slate-200 whitespace-nowrap text-xs flex-shrink-0" data-category="packs">
         Packs Ahorro
       </button>
-      <button class="cat-filter px-3 py-1.5 rounded-full bg-white text-slate-700 border border-slate-200 whitespace-nowrap text-xs" data-category="cervicales">
+      <button class="cat-filter px-2.5 sm:px-3 py-1.5 rounded-full bg-white text-slate-700 border border-slate-200 whitespace-nowrap text-xs flex-shrink-0" data-category="cervicales">
         Cervicales
       </button>
-      <button class="cat-filter px-3 py-1.5 rounded-full bg-white text-slate-700 border border-slate-200 whitespace-nowrap text-xs" data-category="clasicas">
+      <button class="cat-filter px-2.5 sm:px-3 py-1.5 rounded-full bg-white text-slate-700 border border-slate-200 whitespace-nowrap text-xs flex-shrink-0" data-category="clasicas">
         Clásicas
       </button>
-      <button class="cat-filter px-3 py-1.5 rounded-full bg-white text-slate-700 border border-slate-200 whitespace-nowrap text-xs" data-category="especiales">
+      <button class="cat-filter px-2.5 sm:px-3 py-1.5 rounded-full bg-white text-slate-700 border border-slate-200 whitespace-nowrap text-xs flex-shrink-0" data-category="especiales">
         Especiales
       </button>
-      <button class="cat-filter px-3 py-1.5 rounded-full bg-white text-slate-700 border border-slate-200 whitespace-nowrap text-xs" data-category="accesorios">
+      <button class="cat-filter px-2.5 sm:px-3 py-1.5 rounded-full bg-white text-slate-700 border border-slate-200 whitespace-nowrap text-xs flex-shrink-0" data-category="accesorios">
         Fundas
       </button>
     </div>
 
     <!-- LISTADO DE PRODUCTOS -->
-    <div class="space-y-3.5" id="products-container">
+    <div class="space-y-3" id="products-container">
       {PRODUCTS.map((product) => {
         const transferPrice = Math.round(product.price * (1 - STORE_CONFIG.transferDiscountPercent / 100));
         return (
@@ -99,7 +99,7 @@ const configJson = JSON.stringify(STORE_CONFIG);
           >
             <!-- Imagen Clickeable para abrir Popup de detalles -->
             <div 
-              class="btn-open-details relative w-full h-44 overflow-hidden bg-slate-100 cursor-pointer"
+              class="btn-open-details relative w-full h-40 sm:h-44 overflow-hidden bg-slate-100 cursor-pointer"
               data-id={product.id}
               title="Tocá para ver descripción, cómo se usa y cuidados"
             >
@@ -109,52 +109,54 @@ const configJson = JSON.stringify(STORE_CONFIG);
                 class="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
                 loading="lazy"
               />
-              <span class="absolute bottom-2 right-2 bg-slate-900/75 hover:bg-slate-900 text-white text-[10px] font-bold px-2.5 py-1 rounded-full backdrop-blur-sm flex items-center gap-1 transition-all">
+              <span class="absolute bottom-2 right-2 bg-slate-900/80 hover:bg-slate-900 text-white text-[9px] sm:text-[10px] font-bold px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full backdrop-blur-sm flex items-center gap-1 transition-all">
                 <i class="fa-solid fa-circle-info text-emerald-400"></i> Ver detalles
               </span>
             </div>
 
             <!-- Información del Producto -->
-            <div class="p-3.5 space-y-2.5">
+            <div class="p-3 sm:p-3.5 space-y-2">
               <div>
                 <!-- Título también clickeable para abrir detalles -->
                 <h3 
-                  class="btn-open-details font-bold text-slate-900 text-sm sm:text-base leading-snug cursor-pointer hover:text-[#008069] transition-colors"
+                  class="btn-open-details font-bold text-slate-900 text-xs sm:text-sm md:text-base leading-snug cursor-pointer hover:text-[#008069] transition-colors"
                   data-id={product.id}
                 >
                   {product.name}
                 </h3>
-                <p class="text-[11px] text-slate-500 mt-1 leading-snug">
+                <p class="text-[10px] sm:text-[11px] text-slate-500 mt-1 leading-snug">
                   {product.description}
                 </p>
-                <div class="flex flex-wrap gap-x-3 gap-y-1 mt-1.5">
+                <div class="flex flex-wrap gap-x-2 sm:gap-x-3 gap-y-1 mt-1.5">
                   {product.features.slice(0, 2).map((feat) => (
-                    <span class="text-[10px] text-slate-600 flex items-center gap-1">
-                      <i class="fa-solid fa-check text-emerald-600 text-[10px]"></i>
-                      {feat}
+                    <span class="text-[9px] sm:text-[10px] text-slate-600 flex items-center gap-1">
+                      <i class="fa-solid fa-check text-emerald-600 text-[9px]"></i>
+                      <span>{feat}</span>
                     </span>
                   ))}
                 </div>
               </div>
 
-              <!-- Bloque de Precios -->
-              <div class="pt-2 border-t border-slate-100 flex items-baseline justify-between">
-                <div>
-                  <span class="text-[11px] text-slate-400 line-through mr-1.5">
-                    ${product.originalPrice.toLocaleString('es-AR')}
-                  </span>
-                  <span class="text-base font-extrabold text-slate-900">
-                    ${product.price.toLocaleString('es-AR')}
-                  </span>
-                  <div class="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded mt-0.5 inline-block">
-                    ${transferPrice.toLocaleString('es-AR')} c/ Transferencia (-15%)
+              <!-- Bloque de Precios (flex-wrap para no desbordar en pantallas angostas) -->
+              <div class="pt-2 border-t border-slate-100 flex flex-wrap items-center justify-between gap-1.5">
+                <div class="min-w-0">
+                  <div class="flex items-baseline gap-1.5">
+                    <span class="text-[10px] sm:text-[11px] text-slate-400 line-through">
+                      ${product.originalPrice.toLocaleString('es-AR')}
+                    </span>
+                    <span class="text-sm sm:text-base font-extrabold text-slate-900">
+                      ${product.price.toLocaleString('es-AR')}
+                    </span>
+                  </div>
+                  <div class="text-[9px] sm:text-[10px] font-bold text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded mt-0.5 inline-block">
+                    ${transferPrice.toLocaleString('es-AR')} c/ Transf. (-15%)
                   </div>
                 </div>
 
                 <!-- Botón de detalles de texto -->
                 <button 
                   type="button"
-                  class="btn-open-details text-[11px] text-[#008069] font-bold underline hover:text-[#00705c]"
+                  class="btn-open-details text-[11px] text-[#008069] font-bold underline hover:text-[#00705c] py-0.5 flex-shrink-0"
                   data-id={product.id}
                 >
                   + Info y uso
@@ -165,25 +167,25 @@ const configJson = JSON.stringify(STORE_CONFIG);
               <div class="pt-2 border-t border-slate-100 space-y-2">
                 
                 <!-- Selector de Cantidad en la Tarjeta -->
-                <div class="flex items-center justify-between bg-slate-50 p-1.5 rounded-xl border border-slate-200">
-                  <span class="text-xs font-bold text-slate-600 pl-2">Cantidad:</span>
+                <div class="flex items-center justify-between bg-slate-50 p-1 sm:p-1.5 rounded-xl border border-slate-200">
+                  <span class="text-[11px] sm:text-xs font-bold text-slate-600 pl-1.5">Cantidad:</span>
                   <div class="flex items-center bg-white border border-slate-200 rounded-lg overflow-hidden shadow-sm">
                     <button 
                       type="button" 
-                      class="btn-card-qty-minus w-8 h-7 flex items-center justify-center text-slate-700 hover:bg-slate-100 active:bg-slate-200 font-bold text-base transition-colors"
+                      class="btn-card-qty-minus w-7 h-6 sm:w-8 sm:h-7 flex items-center justify-center text-slate-700 hover:bg-slate-100 active:bg-slate-200 font-bold text-sm sm:text-base transition-colors"
                       data-id={product.id}
                     >
                       -
                     </button>
                     <span 
                       id={`qty-display-${product.id}`} 
-                      class="w-8 text-center font-extrabold text-xs text-slate-900"
+                      class="w-7 sm:w-8 text-center font-extrabold text-[11px] sm:text-xs text-slate-900"
                     >
                       1
                     </span>
                     <button 
                       type="button" 
-                      class="btn-card-qty-plus w-8 h-7 flex items-center justify-center text-slate-700 hover:bg-slate-100 active:bg-slate-200 font-bold text-base transition-colors"
+                      class="btn-card-qty-plus w-7 h-6 sm:w-8 sm:h-7 flex items-center justify-center text-slate-700 hover:bg-slate-100 active:bg-slate-200 font-bold text-sm sm:text-base transition-colors"
                       data-id={product.id}
                     >
                       +
@@ -192,31 +194,31 @@ const configJson = JSON.stringify(STORE_CONFIG);
                 </div>
 
                 <!-- 2 BOTONES: AGREGAR AL CARRITO Y PEDIR DIRECTO -->
-                <div class="grid grid-cols-2 gap-2">
+                <div class="grid grid-cols-2 gap-1.5 sm:gap-2">
                   <!-- Botón 1: Agregar Carrito -->
                   <button 
                     type="button"
-                    class="btn-add-cart bg-slate-100 hover:bg-slate-200 active:scale-95 text-slate-800 font-bold text-xs py-2.5 px-2 rounded-xl flex items-center justify-center gap-1.5 transition-all border border-slate-200"
+                    class="btn-add-cart bg-slate-100 hover:bg-slate-200 active:scale-95 text-slate-800 font-bold text-[11px] sm:text-xs py-2 px-1 rounded-xl flex items-center justify-center gap-1 transition-all border border-slate-200"
                     data-id={product.id}
                     data-name={product.name}
                     data-price={product.price}
                     data-transfer-price={transferPrice}
                   >
-                    <i class="fa-solid fa-cart-plus text-slate-600"></i>
-                    <span>+ Carrito</span>
+                    <i class="fa-solid fa-cart-plus text-slate-600 text-[11px]"></i>
+                    <span class="truncate">+ Carrito</span>
                   </button>
 
                   <!-- Botón 2: Pedir Directo por WhatsApp -->
                   <button 
                     type="button"
-                    class="btn-direct-order bg-[#25D366] hover:bg-[#20ba5a] active:scale-95 text-white font-extrabold text-xs py-2.5 px-2 rounded-xl flex items-center justify-center gap-1.5 shadow-md shadow-emerald-500/20 transition-all"
+                    class="btn-direct-order bg-[#25D366] hover:bg-[#20ba5a] active:scale-95 text-white font-extrabold text-[11px] sm:text-xs py-2 px-1 rounded-xl flex items-center justify-center gap-1 shadow-md shadow-emerald-500/20 transition-all"
                     data-id={product.id}
                     data-name={product.name}
                     data-price={product.price}
                     data-transfer-price={transferPrice}
                   >
-                    <i class="fa-brands fa-whatsapp text-sm"></i>
-                    <span>Pedir Ya</span>
+                    <i class="fa-brands fa-whatsapp text-xs sm:text-sm"></i>
+                    <span class="truncate">Pedir Ya</span>
                   </button>
                 </div>
 
@@ -228,41 +230,41 @@ const configJson = JSON.stringify(STORE_CONFIG);
     </div>
   </main>
 
-  <!-- BARRA FLOTANTE INFERIOR DEL CARRITO (CON BOTÓN VER CARRITO Y PEDIR) -->
+  <!-- BARRA FLOTANTE INFERIOR DEL CARRITO (COMPLETA Y ADAPTADA A 320px) -->
   <aside 
     id="floating-cart" 
-    class="fixed bottom-0 inset-x-0 bg-white border-t border-slate-200 shadow-[0_-8px_20px_rgba(0,0,0,0.12)] z-40 py-2.5 px-3.5 transition-transform duration-300 translate-y-full"
+    class="fixed bottom-0 inset-x-0 bg-white border-t border-slate-200 shadow-[0_-8px_20px_rgba(0,0,0,0.12)] z-40 safe-bottom pt-2 pb-2 px-2.5 sm:px-3.5 transition-transform duration-300 translate-y-full"
   >
-    <div class="max-w-md mx-auto flex items-center justify-between gap-2">
+    <div class="max-w-md mx-auto flex items-center justify-between gap-1.5 sm:gap-2">
       <!-- Indicador Clickeable para abrir carrito -->
       <div 
         id="cart-summary-trigger" 
-        class="flex items-center gap-2 min-w-0 cursor-pointer hover:opacity-80 transition-opacity"
+        class="flex items-center gap-1.5 min-w-0 cursor-pointer hover:opacity-80 transition-opacity flex-1 sm:flex-initial"
         title="Tocá para ver los productos agregados"
       >
-        <div class="relative w-9 h-9 rounded-xl bg-emerald-100 text-[#008069] flex items-center justify-center font-bold text-sm flex-shrink-0">
+        <div class="relative w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-emerald-100 text-[#008069] flex items-center justify-center font-bold text-xs sm:text-sm flex-shrink-0">
           <i class="fa-solid fa-cart-shopping"></i>
           <span id="cart-count-badge" class="absolute -top-1 -right-1 w-4 h-4 bg-[#008069] text-white text-[9px] font-bold rounded-full flex items-center justify-center border-2 border-white">
             0
           </span>
         </div>
         <div class="min-w-0">
-          <span class="text-[10px] text-slate-500 block leading-tight font-medium">Total carrito</span>
-          <span id="cart-total-text" class="text-sm font-extrabold text-slate-900 leading-tight truncate block">
+          <span class="text-[9px] sm:text-[10px] text-slate-500 block leading-tight font-medium">Total carrito</span>
+          <span id="cart-total-text" class="text-xs sm:text-sm font-extrabold text-slate-900 leading-tight truncate block">
             $0
           </span>
         </div>
       </div>
 
-      <!-- BOTONES DE ACCIÓN: VER CARRITO Y PEDIR DIRECTO -->
-      <div class="flex items-center gap-2 flex-shrink-0">
+      <!-- BOTONES DE ACCIÓN: VER CARRITO Y PEDIR DIRECTO (nunca se cortan) -->
+      <div class="flex items-center gap-1 sm:gap-2 flex-shrink-0">
         <!-- BOTÓN VER CARRITO -->
         <button 
           id="btn-open-cart-modal"
           type="button" 
-          class="bg-slate-100 hover:bg-slate-200 active:scale-95 text-slate-800 font-bold text-xs py-2.5 px-3 rounded-xl flex items-center gap-1.5 transition-all border border-slate-200 shadow-sm"
+          class="bg-slate-100 hover:bg-slate-200 active:scale-95 text-slate-800 font-bold text-[11px] sm:text-xs py-2 px-2 sm:px-3 rounded-xl flex items-center gap-1 transition-all border border-slate-200 shadow-sm whitespace-nowrap"
         >
-          <i class="fa-solid fa-bag-shopping text-slate-600 text-xs"></i>
+          <i class="fa-solid fa-bag-shopping text-slate-600 text-[10px]"></i>
           <span>Ver Carrito</span>
         </button>
 
@@ -270,16 +272,16 @@ const configJson = JSON.stringify(STORE_CONFIG);
         <button 
           id="btn-send-cart-whatsapp"
           type="button" 
-          class="bg-[#25D366] hover:bg-[#20ba5a] active:scale-95 text-white font-extrabold text-xs sm:text-sm py-2.5 px-3.5 rounded-xl flex items-center gap-1.5 shadow-md shadow-emerald-500/20 transition-all"
+          class="bg-[#25D366] hover:bg-[#20ba5a] active:scale-95 text-white font-extrabold text-[11px] sm:text-xs py-2 px-2.5 sm:px-3.5 rounded-xl flex items-center gap-1 shadow-md shadow-emerald-500/20 transition-all whitespace-nowrap"
         >
-          <i class="fa-brands fa-whatsapp text-sm"></i>
+          <i class="fa-brands fa-whatsapp text-xs sm:text-sm"></i>
           <span>Pedir</span>
         </button>
       </div>
     </div>
   </aside>
 
-  <!-- POPUP / MODAL DE "MI CARRITO" (VER Y MODIFICAR PRODUCTOS AGREGADOS) -->
+  <!-- POPUP / MODAL DE "MI CARRITO" -->
   <div 
     id="cart-modal" 
     class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 hidden transition-opacity duration-200"
@@ -288,29 +290,29 @@ const configJson = JSON.stringify(STORE_CONFIG);
       class="bg-white w-full max-w-md rounded-t-3xl sm:rounded-3xl max-h-[90vh] flex flex-col overflow-hidden shadow-2xl animate-in slide-in-from-bottom"
     >
       <!-- Modal Header -->
-      <div class="bg-[#008069] text-white px-4 py-3 flex items-center justify-between sticky top-0 z-10">
-        <div class="flex items-center gap-2">
-          <i class="fa-solid fa-bag-shopping text-lg text-emerald-300"></i>
-          <div>
-            <h3 class="font-bold text-sm sm:text-base leading-tight">
+      <div class="bg-[#008069] text-white px-3.5 py-3 sm:px-4 flex items-center justify-between sticky top-0 z-10">
+        <div class="flex items-center gap-2 min-w-0">
+          <i class="fa-solid fa-bag-shopping text-base sm:text-lg text-emerald-300 flex-shrink-0"></i>
+          <div class="min-w-0">
+            <h3 class="font-bold text-xs sm:text-sm md:text-base leading-tight truncate">
               Tu Carrito
             </h3>
-            <span id="cart-modal-count-text" class="text-[11px] text-emerald-100 block">0 productos seleccionados</span>
+            <span id="cart-modal-count-text" class="text-[10px] sm:text-[11px] text-emerald-100 block truncate">0 productos seleccionados</span>
           </div>
         </div>
 
-        <div class="flex items-center gap-2">
+        <div class="flex items-center gap-1 sm:gap-2 flex-shrink-0">
           <button 
             id="btn-cart-modal-clear" 
             type="button" 
-            class="text-xs text-emerald-100 hover:text-white underline font-semibold px-2 py-1"
+            class="text-[11px] text-emerald-100 hover:text-white underline font-semibold px-1.5 py-1"
           >
             Vaciar
           </button>
           <button 
             id="btn-close-cart-modal" 
             type="button" 
-            class="text-white/80 hover:text-white p-1 text-xl leading-none"
+            class="text-white/80 hover:text-white p-1 text-lg sm:text-xl leading-none"
           >
             <i class="fa-solid fa-xmark"></i>
           </button>
@@ -318,44 +320,44 @@ const configJson = JSON.stringify(STORE_CONFIG);
       </div>
 
       <!-- Modal Body (Lista de items en el carrito) -->
-      <div class="p-4 overflow-y-auto space-y-3 text-xs flex-1">
+      <div class="p-3 sm:p-4 overflow-y-auto space-y-2.5 text-xs flex-1">
         
         <!-- Contenedor dinámico de items -->
-        <div id="cart-modal-items-list" class="space-y-2.5">
+        <div id="cart-modal-items-list" class="space-y-2">
           <!-- Inyectado por JS -->
         </div>
 
         <!-- Resumen de costos -->
-        <div class="bg-slate-50 p-3.5 rounded-2xl border border-slate-200 space-y-2 mt-3">
-          <div class="flex justify-between text-slate-600">
-            <span>Subtotal de productos:</span>
+        <div class="bg-slate-50 p-3 rounded-2xl border border-slate-200 space-y-1.5 mt-2">
+          <div class="flex justify-between text-slate-600 text-[11px]">
+            <span>Subtotal productos:</span>
             <span id="cart-modal-subtotal" class="font-bold text-slate-900">$0</span>
           </div>
-          <div class="flex justify-between text-emerald-700 font-bold">
+          <div class="flex justify-between text-emerald-700 font-bold text-[11px]">
             <span>Descuento Transferencia (-15%):</span>
             <span id="cart-modal-discount">-$0</span>
           </div>
-          <div class="pt-2 border-t border-slate-200 flex justify-between items-baseline text-sm font-extrabold text-slate-900">
+          <div class="pt-1.5 border-t border-slate-200 flex justify-between items-baseline text-xs sm:text-sm font-extrabold text-slate-900">
             <span>Total a Pagar:</span>
-            <span id="cart-modal-final-total" class="text-emerald-800 text-base font-black">$0</span>
+            <span id="cart-modal-final-total" class="text-emerald-800 text-sm sm:text-base font-black">$0</span>
           </div>
         </div>
 
         <!-- Envío en Córdoba Info -->
-        <div id="cart-modal-shipping-box" class="bg-emerald-50 p-3 rounded-2xl border border-emerald-200 text-[11px] space-y-1">
+        <div id="cart-modal-shipping-box" class="bg-emerald-50 p-2.5 sm:p-3 rounded-2xl border border-emerald-200 text-[10px] sm:text-[11px] space-y-1">
           <!-- Inyectado por JS con cálculo de si califica para envío gratis -->
         </div>
 
       </div>
 
       <!-- Modal Footer con botón de acción directa a WhatsApp -->
-      <div class="p-3.5 bg-slate-50 border-t border-slate-200 flex items-center gap-2">
+      <div class="p-3 bg-slate-50 border-t border-slate-200 flex items-center gap-2 safe-bottom">
         <button 
           id="btn-cart-modal-submit" 
           type="button" 
-          class="w-full bg-[#25D366] hover:bg-[#20ba5a] active:scale-95 text-white font-extrabold text-sm py-3 px-4 rounded-xl flex items-center justify-center gap-2 shadow-md shadow-emerald-500/25 transition-all"
+          class="w-full bg-[#25D366] hover:bg-[#20ba5a] active:scale-95 text-white font-extrabold text-xs sm:text-sm py-3 px-3 rounded-xl flex items-center justify-center gap-2 shadow-md shadow-emerald-500/25 transition-all"
         >
-          <i class="fa-brands fa-whatsapp text-lg"></i>
+          <i class="fa-brands fa-whatsapp text-base"></i>
           <span>Pedir Carrito por WhatsApp</span>
         </button>
       </div>
@@ -371,47 +373,47 @@ const configJson = JSON.stringify(STORE_CONFIG);
       class="bg-white w-full max-w-md rounded-t-3xl sm:rounded-3xl max-h-[90vh] flex flex-col overflow-hidden shadow-2xl animate-in slide-in-from-bottom"
     >
       <!-- Modal Header -->
-      <div class="bg-[#008069] text-white px-4 py-3 flex items-center justify-between sticky top-0 z-10">
+      <div class="bg-[#008069] text-white px-3.5 py-3 sm:px-4 flex items-center justify-between sticky top-0 z-10">
         <div class="min-w-0 flex-1 pr-2">
-          <h3 id="modal-product-title" class="font-bold text-sm sm:text-base leading-tight truncate">
+          <h3 id="modal-product-title" class="font-bold text-xs sm:text-sm md:text-base leading-tight truncate">
             Detalles del Producto
           </h3>
-          <span id="modal-product-price" class="text-xs text-emerald-100 font-semibold block"></span>
+          <span id="modal-product-price" class="text-[10px] sm:text-xs text-emerald-100 font-semibold block truncate"></span>
         </div>
-        <button id="btn-close-modal" type="button" class="text-white/80 hover:text-white p-1 text-xl leading-none">
+        <button id="btn-close-modal" type="button" class="text-white/80 hover:text-white p-1 text-lg sm:text-xl leading-none">
           <i class="fa-solid fa-xmark"></i>
         </button>
       </div>
 
       <!-- Modal Body (Scrollable) -->
-      <div class="p-4 overflow-y-auto space-y-4 text-xs text-slate-700 flex-1">
+      <div class="p-3 sm:p-4 overflow-y-auto space-y-3.5 text-xs text-slate-700 flex-1">
         
         <!-- Imagen del producto en el modal -->
-        <div class="w-full h-36 rounded-2xl overflow-hidden bg-slate-100 border border-slate-200">
+        <div class="w-full h-32 sm:h-36 rounded-2xl overflow-hidden bg-slate-100 border border-slate-200">
           <img id="modal-product-img" src="" alt="" class="w-full h-full object-cover" />
         </div>
 
         <!-- Descripción -->
         <div class="space-y-1">
-          <h4 class="font-bold text-slate-900 text-xs uppercase tracking-wider flex items-center gap-1.5">
+          <h4 class="font-bold text-slate-900 text-[11px] sm:text-xs uppercase tracking-wider flex items-center gap-1.5">
             <i class="fa-solid fa-align-left text-[#008069]"></i>
             <span>Descripción del producto</span>
           </h4>
-          <p id="modal-product-desc" class="text-slate-600 leading-relaxed"></p>
+          <p id="modal-product-desc" class="text-slate-600 text-[11px] sm:text-xs leading-relaxed"></p>
         </div>
 
         <!-- Cómo se usa -->
-        <div class="bg-slate-50 p-3 rounded-2xl border border-slate-200 space-y-1">
-          <h4 class="font-bold text-slate-900 text-xs uppercase tracking-wider flex items-center gap-1.5">
+        <div class="bg-slate-50 p-2.5 sm:p-3 rounded-2xl border border-slate-200 space-y-1">
+          <h4 class="font-bold text-slate-900 text-[11px] sm:text-xs uppercase tracking-wider flex items-center gap-1.5">
             <i class="fa-solid fa-bed text-[#008069]"></i>
             <span>¿Cómo se usa?</span>
           </h4>
-          <p id="modal-product-usage" class="text-slate-600 leading-relaxed"></p>
+          <p id="modal-product-usage" class="text-slate-600 text-[11px] sm:text-xs leading-relaxed"></p>
         </div>
 
         <!-- Precauciones y Cómo cuidarlas -->
-        <div class="bg-amber-50/70 p-3 rounded-2xl border border-amber-200 space-y-1.5">
-          <h4 class="font-bold text-amber-900 text-xs uppercase tracking-wider flex items-center gap-1.5">
+        <div class="bg-amber-50/70 p-2.5 sm:p-3 rounded-2xl border border-amber-200 space-y-1.5">
+          <h4 class="font-bold text-amber-900 text-[11px] sm:text-xs uppercase tracking-wider flex items-center gap-1.5">
             <i class="fa-solid fa-triangle-exclamation text-amber-600"></i>
             <span>Precauciones y Cómo cuidarla</span>
           </h4>
@@ -421,23 +423,23 @@ const configJson = JSON.stringify(STORE_CONFIG);
         </div>
 
         <!-- POLÍTICA DE ENVÍOS CÓRDOBA -->
-        <div class="bg-emerald-50 p-3.5 rounded-2xl border border-emerald-200 space-y-2">
-          <h4 class="font-bold text-emerald-950 text-xs uppercase tracking-wider flex items-center gap-1.5">
+        <div class="bg-emerald-50 p-2.5 sm:p-3 rounded-2xl border border-emerald-200 space-y-1.5">
+          <h4 class="font-bold text-emerald-950 text-[11px] sm:text-xs uppercase tracking-wider flex items-center gap-1.5">
             <i class="fa-solid fa-truck-fast text-[#008069]"></i>
             <span>Envíos en Ciudad de Córdoba</span>
           </h4>
-          <div class="space-y-1.5 text-[11px] text-emerald-900">
+          <div class="space-y-1.5 text-[10px] sm:text-[11px] text-emerald-900">
             <div class="flex items-center justify-between border-b border-emerald-200/80 pb-1">
-              <span>📍 <b>Dentro del anillo de Circunvalación:</b></span>
-              <span class="font-extrabold text-[#008069] text-xs">$3.000</span>
+              <span>📍 <b>Dentro de Circunvalación:</b></span>
+              <span class="font-extrabold text-[#008069]">$3.000</span>
             </div>
             <div class="flex items-center justify-between border-b border-emerald-200/80 pb-1">
-              <span>📍 <b>Fuera del anillo de Circunvalación:</b></span>
-              <span class="font-extrabold text-[#008069] text-xs">$5.000</span>
+              <span>📍 <b>Fuera de Circunvalación:</b></span>
+              <span class="font-extrabold text-[#008069]">$5.000</span>
             </div>
             <div class="flex items-center justify-between pt-0.5 text-emerald-800">
               <span class="font-extrabold">🎉 Compras superiores a $100.000:</span>
-              <span class="bg-emerald-600 text-white font-extrabold px-2 py-0.5 rounded text-[10px] uppercase">
+              <span class="bg-emerald-600 text-white font-extrabold px-1.5 py-0.5 rounded text-[9px] sm:text-[10px] uppercase">
                 ¡Sin Costo!
               </span>
             </div>
@@ -447,11 +449,11 @@ const configJson = JSON.stringify(STORE_CONFIG);
       </div>
 
       <!-- Modal Footer: Acción de Compra Rápida -->
-      <div class="p-3 bg-slate-50 border-t border-slate-200 flex items-center gap-2">
+      <div class="p-3 bg-slate-50 border-t border-slate-200 flex items-center gap-2 safe-bottom">
         <button 
           id="btn-modal-direct-order" 
           type="button" 
-          class="flex-1 bg-[#25D366] hover:bg-[#20ba5a] active:scale-95 text-white font-extrabold text-xs py-3 px-4 rounded-xl flex items-center justify-center gap-2 shadow-md transition-all"
+          class="flex-1 bg-[#25D366] hover:bg-[#20ba5a] active:scale-95 text-white font-extrabold text-xs sm:text-sm py-3 px-3 rounded-xl flex items-center justify-center gap-2 shadow-md transition-all"
         >
           <i class="fa-brands fa-whatsapp text-base"></i>
           <span>Pedir este modelo por WhatsApp</span>
@@ -518,7 +520,7 @@ const configJson = JSON.stringify(STORE_CONFIG);
       if (modalProductTitle) modalProductTitle.textContent = product.name;
       if (modalProductPrice) {
         const transfer = Math.round(product.price * (1 - CONFIG.transferDiscountPercent / 100));
-        modalProductPrice.textContent = `$${product.price.toLocaleString('es-AR')} (o $${transfer.toLocaleString('es-AR')} con 15% OFF transf.)`;
+        modalProductPrice.textContent = `$${product.price.toLocaleString('es-AR')} (o $${transfer.toLocaleString('es-AR')} c/ transf.)`;
       }
       if (modalProductImg) {
         modalProductImg.src = product.image;
@@ -532,8 +534,8 @@ const configJson = JSON.stringify(STORE_CONFIG);
         if (product.careInstructions && product.careInstructions.length > 0) {
           product.careInstructions.forEach(instruction => {
             const li = document.createElement('li');
-            li.className = 'flex items-start gap-1.5 text-[11px] leading-tight';
-            li.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-600 text-[10px] mt-0.5 flex-shrink-0"></i><span>${instruction}</span>`;
+            li.className = 'flex items-start gap-1.5 text-[10px] sm:text-[11px] leading-tight';
+            li.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-600 text-[9px] mt-0.5 flex-shrink-0"></i><span>${instruction}</span>`;
             modalProductCare.appendChild(li);
           });
         }
@@ -569,36 +571,36 @@ const configJson = JSON.stringify(STORE_CONFIG);
       if (cartModalShippingBox) {
         if (regularTotal >= CONFIG.shipping.freeShippingThreshold) {
           cartModalShippingBox.innerHTML = `
-            <div class="flex items-center gap-2 text-emerald-800 font-bold">
-              <i class="fa-solid fa-gift text-base text-emerald-600"></i>
-              <span>¡Felicitaciones! Tu pedido califica para <u>ENVÍO GRATIS</u> en Córdoba Capital.</span>
+            <div class="flex items-center gap-1.5 text-emerald-800 font-bold">
+              <i class="fa-solid fa-gift text-sm text-emerald-600 flex-shrink-0"></i>
+              <span>¡Felicitaciones! Tu pedido tiene <u>ENVÍO GRATIS</u> en Córdoba Capital.</span>
             </div>
           `;
         } else {
           const diff = CONFIG.shipping.freeShippingThreshold - regularTotal;
           cartModalShippingBox.innerHTML = `
-            <div class="text-emerald-900 space-y-1">
+            <div class="text-emerald-900 space-y-0.5">
               <div class="flex justify-between font-bold">
-                <span>📍 Envío en Córdoba Capital:</span>
+                <span>📍 Envío Córdoba Capital:</span>
                 <span>$3.000 / $5.000</span>
               </div>
               <p class="text-[10px] text-emerald-700">
-                ¡Te faltan <b>$${diff.toLocaleString('es-AR')}</b> para desbloquear el <b>ENVÍO GRATIS</b>!
+                ¡Sumá <b>$${diff.toLocaleString('es-AR')}</b> más para tener <b>ENVÍO GRATIS</b>!
               </p>
             </div>
           `;
         }
       }
 
-      // Renderizar listado de productos
+      // Renderizar listado de productos de forma compacta y sin desborde
       if (cartModalItemsList) {
         cartModalItemsList.innerHTML = '';
         if (totalQty === 0) {
           cartModalItemsList.innerHTML = `
-            <div class="text-center py-8 text-slate-400">
-              <i class="fa-solid fa-bag-shopping text-3xl mb-2 text-slate-300"></i>
-              <p class="font-medium">Tu carrito está vacío</p>
-              <button type="button" class="mt-3 text-xs text-[#008069] font-bold underline" onclick="document.getElementById('cart-modal').classList.add('hidden')">
+            <div class="text-center py-6 text-slate-400">
+              <i class="fa-solid fa-bag-shopping text-2xl mb-1.5 text-slate-300"></i>
+              <p class="font-medium text-xs">Tu carrito está vacío</p>
+              <button type="button" class="mt-2 text-xs text-[#008069] font-bold underline" onclick="document.getElementById('cart-modal').classList.add('hidden')">
                 Volver al catálogo
               </button>
             </div>
@@ -611,20 +613,20 @@ const configJson = JSON.stringify(STORE_CONFIG);
               const product = PRODUCTS.find(p => p.id === id);
               if (product) {
                 const itemDiv = document.createElement('div');
-                itemDiv.className = 'flex items-center gap-3 p-2.5 rounded-2xl bg-white border border-slate-200/90 shadow-sm';
+                itemDiv.className = 'flex items-center gap-2 p-2 rounded-xl bg-white border border-slate-200/90 shadow-sm';
                 itemDiv.innerHTML = `
-                  <img src="${product.image}" alt="${product.name}" class="w-12 h-12 rounded-xl object-cover flex-shrink-0 border border-slate-100" />
-                  <div class="flex-1 min-w-0">
-                    <h4 class="font-bold text-slate-900 text-xs truncate">${product.name}</h4>
-                    <span class="text-[11px] text-slate-500 block">$${product.price.toLocaleString('es-AR')} c/u</span>
+                  <img src="${product.image}" alt="${product.name}" class="w-10 h-10 sm:w-11 sm:h-11 rounded-lg object-cover flex-shrink-0 border border-slate-100" />
+                  <div class="flex-1 min-w-0 pr-1">
+                    <h4 class="font-bold text-slate-900 text-[11px] truncate">${product.name}</h4>
+                    <span class="text-[10px] text-slate-500 block">$${product.price.toLocaleString('es-AR')} c/u</span>
                   </div>
-                  <div class="flex items-center gap-1.5 flex-shrink-0">
-                    <div class="flex items-center border border-slate-200 rounded-lg overflow-hidden bg-slate-50">
-                      <button type="button" class="btn-cart-item-minus w-6 h-6 flex items-center justify-center font-bold text-slate-700 hover:bg-slate-200" data-id="${id}">-</button>
-                      <span class="w-6 text-center font-bold text-xs text-slate-900">${qty}</span>
-                      <button type="button" class="btn-cart-item-plus w-6 h-6 flex items-center justify-center font-bold text-slate-700 hover:bg-slate-200" data-id="${id}">+</button>
+                  <div class="flex items-center gap-1 flex-shrink-0">
+                    <div class="flex items-center border border-slate-200 rounded-md overflow-hidden bg-slate-50">
+                      <button type="button" class="btn-cart-item-minus w-5 h-5 flex items-center justify-center font-bold text-slate-700 hover:bg-slate-200 text-xs" data-id="${id}">-</button>
+                      <span class="w-5 text-center font-bold text-[10px] text-slate-900">${qty}</span>
+                      <button type="button" class="btn-cart-item-plus w-5 h-5 flex items-center justify-center font-bold text-slate-700 hover:bg-slate-200 text-xs" data-id="${id}">+</button>
                     </div>
-                    <button type="button" class="btn-cart-item-remove text-slate-400 hover:text-red-500 p-1.5 text-xs" data-id="${id}" title="Eliminar">
+                    <button type="button" class="btn-cart-item-remove text-slate-400 hover:text-red-500 p-1 text-xs" data-id="${id}" title="Eliminar">
                       <i class="fa-solid fa-trash-can"></i>
                     </button>
                   </div>
@@ -793,7 +795,7 @@ const configJson = JSON.stringify(STORE_CONFIG);
         saveCart();
 
         const originalHtml = btn.innerHTML;
-        btn.innerHTML = '<i class="fa-solid fa-check text-emerald-600"></i> Agregado';
+        btn.innerHTML = '<i class="fa-solid fa-check text-emerald-600 text-[10px]"></i> <span class="truncate">Listo</span>';
         btn.classList.add('bg-emerald-100', 'border-emerald-300');
         setTimeout(() => {
           btn.innerHTML = originalHtml;

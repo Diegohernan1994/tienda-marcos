@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
 :root {
   --wa-green: #25D366;
   --wa-teal: #128C7E;
@@ -18,6 +22,11 @@ html, body {
   color: #111B21;
   -webkit-tap-highlight-color: transparent;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* Soporte para barra inferior de iOS / Safe Area */
+.safe-bottom {
+  padding-bottom: max(0.625rem, env(safe-area-inset-bottom, 0.625rem));
 }
 
 /* Custom scrollbar */
