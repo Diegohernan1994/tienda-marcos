@@ -33,7 +33,7 @@ const configJson = JSON.stringify(STORE_CONFIG);
 
       <!-- Botón de chat directo -->
       <a 
-        href={`https://api.whatsapp.com/send?phone=${STORE_CONFIG.whatsappNumber}&text=Hola!%20Tengo%20una%20consulta%20sobre%20las%20almohadas%20viscoel%C3%A1sticas%20en%20C%C3%B3rdoba`}
+        href={`https://api.whatsapp.com/send?phone=${STORE_CONFIG.whatsappNumber}&text=Hola!%20Tengo%20una%20consulta%20sobre%20las%20almohadas%20viscoel%C3%A1sticas`}
         target="_blank"
         rel="noopener noreferrer"
         class="bg-[#25D366] hover:bg-[#20ba5a] active:scale-95 text-white text-[11px] font-bold px-2.5 py-1.5 rounded-full flex items-center gap-1 shadow-sm transition-all flex-shrink-0"
@@ -997,7 +997,7 @@ const configJson = JSON.stringify(STORE_CONFIG);
         : "📍 Envío en Córdoba Capital (Dentro de Circunvalación $3.000 / Fuera $5.000)";
 
       const message = 
-`👋 ¡Hola! Quiero hacer el siguiente pedido en Córdoba:
+`👋 ¡Hola! Quiero hacer el siguiente pedido:
 
 📦 *${qty}x ${product.name}*
 💰 *Precio:* $${subtotal.toLocaleString('es-AR')}
@@ -1065,7 +1065,7 @@ ${shippingText}
         : "📍 Envío en Córdoba Capital (Dentro de Circunvalación $3.000 / Fuera $5.000)";
 
       const message = 
-`👋 ¡Hola! Quiero hacer este pedido de la tienda en Córdoba:
+`👋 ¡Hola! Quiero hacer el siguiente pedido:
 
 🛒 *PRODUCTOS:*
 ${itemsText}
