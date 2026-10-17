@@ -462,6 +462,121 @@ const configJson = JSON.stringify(STORE_CONFIG);
     </div>
   </div>
 
+  <!-- MODAL EXCLUSIVO DE TARIFAS DE ENVÍO -->
+  <div 
+    id="shipping-modal" 
+    class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 hidden transition-opacity duration-200"
+  >
+    <div 
+      class="bg-white w-full max-w-md rounded-t-3xl sm:rounded-3xl max-h-[85vh] flex flex-col overflow-hidden shadow-2xl animate-in slide-in-from-bottom"
+    >
+      <!-- Modal Header -->
+      <div class="bg-[#008069] text-white px-3.5 py-3 sm:px-4 flex items-center justify-between sticky top-0 z-10">
+        <div class="flex items-center gap-2">
+          <i class="fa-solid fa-truck-fast text-lg text-emerald-200"></i>
+          <div>
+            <h3 class="font-bold text-sm sm:text-base leading-tight">
+              Tarifas de Envío
+            </h3>
+            <span class="text-[10px] sm:text-[11px] text-emerald-100 font-medium block">
+              Ciudad de Córdoba y alrededores
+            </span>
+          </div>
+        </div>
+        <button id="btn-close-shipping-modal" type="button" class="text-white/80 hover:text-white p-1 text-lg sm:text-xl leading-none" aria-label="Cerrar modal">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <!-- Modal Body -->
+      <div class="p-3.5 sm:p-4 overflow-y-auto space-y-3 text-xs text-slate-700 flex-1">
+        <!-- Tarjetas de tarifas -->
+        <div class="space-y-2">
+          <!-- Dentro de circunvalación -->
+          <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200 flex items-center justify-between gap-3">
+            <div class="flex items-start gap-2.5">
+              <span class="w-7 h-7 rounded-full bg-emerald-100 text-[#008069] flex items-center justify-center font-bold text-xs flex-shrink-0 mt-0.5">
+                <i class="fa-solid fa-city"></i>
+              </span>
+              <div>
+                <h4 class="font-bold text-slate-900 text-xs sm:text-sm">Dentro de Circunvalación</h4>
+                <p class="text-[10px] sm:text-[11px] text-slate-500">Barrios céntricos e intermedios de Córdoba</p>
+              </div>
+            </div>
+            <span class="text-base sm:text-lg font-extrabold text-[#008069] flex-shrink-0">
+              $3.000
+            </span>
+          </div>
+
+          <!-- Fuera de circunvalación -->
+          <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200 flex items-center justify-between gap-3">
+            <div class="flex items-start gap-2.5">
+              <span class="w-7 h-7 rounded-full bg-teal-100 text-teal-800 flex items-center justify-center font-bold text-xs flex-shrink-0 mt-0.5">
+                <i class="fa-solid fa-route"></i>
+              </span>
+              <div>
+                <h4 class="font-bold text-slate-900 text-xs sm:text-sm">Fuera de Circunvalación</h4>
+                <p class="text-[10px] sm:text-[11px] text-slate-500">Zonas periféricas y countries de Córdoba Capital</p>
+              </div>
+            </div>
+            <span class="text-base sm:text-lg font-extrabold text-[#008069] flex-shrink-0">
+              $5.000
+            </span>
+          </div>
+
+          <!-- Envío Gratis -->
+          <div class="p-3 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-700 text-white flex items-center justify-between gap-3 shadow-sm">
+            <div class="flex items-start gap-2.5">
+              <span class="w-7 h-7 rounded-full bg-white/20 flex items-center justify-center font-bold text-xs flex-shrink-0 mt-0.5">
+                <i class="fa-solid fa-gift text-yellow-300"></i>
+              </span>
+              <div>
+                <h4 class="font-bold text-xs sm:text-sm">¡ENVÍO GRATIS!</h4>
+                <p class="text-[10px] sm:text-[11px] text-emerald-100">En compras superiores a $100.000</p>
+              </div>
+            </div>
+            <span class="bg-yellow-400 text-slate-900 text-[10px] sm:text-xs font-black uppercase px-2 py-0.5 rounded-full shadow-sm flex-shrink-0">
+              Bonificado
+            </span>
+          </div>
+        </div>
+
+        <!-- Tiempos de entrega y coordinación -->
+        <div class="bg-emerald-50/70 p-3 rounded-2xl border border-emerald-200 space-y-2">
+          <h4 class="font-bold text-emerald-950 text-xs flex items-center gap-1.5">
+            <i class="fa-solid fa-clock text-[#008069]"></i>
+            <span>Tiempos y forma de entrega</span>
+          </h4>
+          <ul class="space-y-1.5 text-[10px] sm:text-[11px] text-emerald-900">
+            <li class="flex items-start gap-2">
+              <i class="fa-solid fa-circle-check text-emerald-600 text-xs mt-0.5 flex-shrink-0"></i>
+              <span><b>Envíos en el día o en 24 hs hábiles</b> por cadetería propia en Córdoba Capital.</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <i class="fa-solid fa-circle-check text-emerald-600 text-xs mt-0.5 flex-shrink-0"></i>
+              <span><b>Coordinación directa por WhatsApp:</b> Te avisamos el rango horario de entrega antes de salir.</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <i class="fa-solid fa-circle-check text-emerald-600 text-xs mt-0.5 flex-shrink-0"></i>
+              <span><b>Pago flexible:</b> Efectivo contra entrega o transferencia previa con <b>15% OFF extra</b>.</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="p-3 bg-slate-50 border-t border-slate-200 flex gap-2 safe-bottom">
+        <button 
+          id="btn-close-shipping-modal-action" 
+          type="button" 
+          class="flex-1 bg-[#008069] hover:bg-[#00705c] active:scale-95 text-white font-bold text-xs sm:text-sm py-2.5 px-3 rounded-xl transition-all"
+        >
+          Entendido, ver productos
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- SCRIPT DE INTERACCIÓN, POPUP DE CARRITO Y WHATSAPP -->
   <script is:inline define:vars={{ productsJson, configJson }}>
     const PRODUCTS = JSON.parse(productsJson);
@@ -497,6 +612,19 @@ const configJson = JSON.stringify(STORE_CONFIG);
     const cartModalFinalTotal = document.getElementById('cart-modal-final-total');
     const cartModalShippingBox = document.getElementById('cart-modal-shipping-box');
     const btnCartModalSubmit = document.getElementById('btn-cart-modal-submit');
+
+    // Elementos del Modal de Envíos Exclusivo
+    const shippingModal = document.getElementById('shipping-modal');
+    const btnCloseShippingModal = document.getElementById('btn-close-shipping-modal');
+    const btnCloseShippingModalAction = document.getElementById('btn-close-shipping-modal-action');
+
+    function openShippingModal() {
+      if (shippingModal) shippingModal.classList.remove('hidden');
+    }
+
+    function closeShippingModal() {
+      if (shippingModal) shippingModal.classList.add('hidden');
+    }
 
     // Elementos del Modal de Producto
     const productModal = document.getElementById('product-modal');
@@ -731,8 +859,14 @@ const configJson = JSON.stringify(STORE_CONFIG);
     });
 
     if (btnOpenShippingInfo) {
-      btnOpenShippingInfo.addEventListener('click', () => {
-        openModalForProduct(PRODUCTS[0].id);
+      btnOpenShippingInfo.addEventListener('click', openShippingModal);
+    }
+
+    if (btnCloseShippingModal) btnCloseShippingModal.addEventListener('click', closeShippingModal);
+    if (btnCloseShippingModalAction) btnCloseShippingModalAction.addEventListener('click', closeShippingModal);
+    if (shippingModal) {
+      shippingModal.addEventListener('click', (e) => {
+        if (e.target === shippingModal) closeShippingModal();
       });
     }
 
