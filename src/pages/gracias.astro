@@ -1,0 +1,150 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { STORE_CONFIG } from '../data/config.js';
+
+const configJson = JSON.stringify(STORE_CONFIG);
+---
+
+<Layout title={`¡Pedido Registrado! | ${STORE_CONFIG.name}`} isConversionPage={true}>
+  <main class="min-h-screen bg-[#F0F2F5] flex flex-col justify-center items-center py-6 px-4">
+    <div class="max-w-sm w-full mx-auto space-y-4">
+      
+      <!-- Tarjeta de Conversión -->
+      <div class="bg-white rounded-3xl p-6 shadow-xl border border-slate-200 text-center relative overflow-hidden">
+        
+        <div class="w-16 h-16 bg-emerald-100 text-[#008069] rounded-full mx-auto flex items-center justify-center text-3xl shadow-inner animate-bounce">
+          <i class="fa-solid fa-check"></i>
+        </div>
+
+        <span class="inline-block mt-3 bg-emerald-50 text-emerald-800 text-[11px] font-bold px-3 py-0.5 rounded-full border border-emerald-200">
+          CONVERSIÓN REGISTRADA
+        </span>
+
+        <h1 class="text-xl font-extrabold text-slate-900 mt-2">
+          ¡Tu pedido está listo!
+        </h1>
+
+        <p class="text-xs text-slate-500 mt-1">
+          Orden <span id="thank-order-id" class="font-bold text-slate-800">#ALM-0000</span>
+        </p>
+
+        <!-- Cuadro con Resumen -->
+        <div class="bg-slate-50 rounded-2xl p-3.5 my-4 border border-slate-200 text-left space-y-1.5 text-xs">
+          <div class="flex justify-between items-center">
+            <span class="text-slate-500">Monto total:</span>
+            <span id="thank-total" class="font-extrabold text-emerald-800 text-sm">$0</span>
+          </div>
+          <div id="thank-transfer-row" class="flex justify-between items-center text-emerald-700 font-semibold text-[11px]">
+            <span>Con 15% OFF transf.:</span>
+            <span id="thank-transfer-total">$0</span>
+          </div>
+          <div id="thank-items-summary" class="pt-2 border-t border-slate-200 text-slate-600 space-y-1 text-[11px]">
+            <!-- Items del pedido -->
+          </div>
+        </div>
+
+        <!-- Botón Gigante WhatsApp -->
+        <a 
+          id="btn-whatsapp-redirect"
+          href="#"
+          class="w-full bg-[#25D366] hover:bg-[#20ba5a] active:scale-95 text-white font-extrabold text-sm py-3.5 px-4 rounded-2xl flex items-center justify-center gap-2.5 shadow-lg shadow-emerald-500/25 transition-all"
+        >
+          <i class="fa-brands fa-whatsapp text-xl"></i>
+          <span>Abrir WhatsApp Ahora</span>
+        </a>
+
+        <!-- Contador o aviso de redirección -->
+        <p id="countdown-text" class="text-[11px] text-slate-400 mt-2.5 flex items-center justify-center gap-1.5">
+          <span class="inline-block w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+          <span>Abriendo WhatsApp automáticamente...</span>
+        </p>
+
+        <div class="mt-4 pt-3 border-t border-slate-100">
+          <a href="/" class="text-xs text-slate-500 hover:text-slate-800 font-semibold underline">
+            ← Volver a la tienda
+          </a>
+        </div>
+      </div>
+
+      <!-- Garantía -->
+      <p class="text-center text-[11px] text-slate-400 flex items-center justify-center gap-1.5">
+        <i class="fa-solid fa-lock text-emerald-600"></i>
+        <span>Atención 100% personalizada por WhatsApp</span>
+      </p>
+    </div>
+  </main>
+
+  <script is:inline define:vars={{ configJson }}>
+    const CONFIG = JSON.parse(configJson);
+
+    // Leer parámetros de URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const orderIdParam = urlParams.get('order_id') || 'ALM-1000';
+    const totalParam = parseFloat(urlParams.get('total')) || 0;
+    const waUrlParam = urlParams.get('wa_url') ? decodeURIComponent(urlParams.get('wa_url')) : null;
+
+    // Recuperar detalles de sessionStorage si existen
+    let orderData = null;
+    try {
+      const stored = sessionStorage.getItem('current_order');
+      if (stored) orderData = JSON.parse(stored);
+    } catch (e) {}
+
+    const finalOrderId = orderData?.orderId || orderIdParam;
+    const finalTotal = orderData?.total || totalParam;
+    const finalTransferTotal = orderData?.transferTotal || Math.round(finalTotal * (1 - CONFIG.transferDiscountPercent / 100));
+
+    // Elementos DOM
+    const thankOrderId = document.getElementById('thank-order-id');
+    const thankTotal = document.getElementById('thank-total');
+    const thankTransferTotal = document.getElementById('thank-transfer-total');
+    const thankItemsSummary = document.getElementById('thank-items-summary');
+    const btnWhatsappRedirect = document.getElementById('btn-whatsapp-redirect');
+
+    if (thankOrderId) thankOrderId.textContent = `#${finalOrderId}`;
+    if (thankTotal) thankTotal.textContent = `$${finalTotal.toLocaleString('es-AR')}`;
+    if (thankTransferTotal) thankTransferTotal.textContent = `$${finalTransferTotal.toLocaleString('es-AR')}`;
+
+    if (thankItemsSummary && orderData?.items) {
+      thankItemsSummary.innerHTML = orderData.items.map(it => 
+        `<div class="flex justify-between"><span>• ${it.qty}x ${it.name}</span><span class="font-bold">$${(it.price * it.qty).toLocaleString('es-AR')}</span></div>`
+      ).join('');
+    }
+
+    // Armar enlace de WhatsApp
+    let waUrl = waUrlParam || orderData?.waUrl;
+    if (!waUrl) {
+      const fallbackMsg = `👋 ¡Hola! Quiero hacer el pedido #${finalOrderId} por un total de $${finalTotal.toLocaleString('es-AR')} ($${finalTransferTotal.toLocaleString('es-AR')} con 15% OFF transferencia). ¿Me pasan los datos para coordinar el pago y envío? ¡Gracias!`;
+      waUrl = `https://wa.me/${CONFIG.whatsappNumber}?text=${encodeURIComponent(fallbackMsg)}`;
+    }
+
+    if (btnWhatsappRedirect) {
+      btnWhatsappRedirect.href = waUrl;
+    }
+
+    // DISPARO DE EVENTOS DE META PIXEL
+    if (typeof fbq === 'function') {
+      try {
+        fbq('track', 'Purchase', {
+          content_name: 'Almohadas Viscoelásticas',
+          content_type: 'product',
+          value: finalTotal,
+          currency: 'ARS',
+          order_id: finalOrderId
+        });
+        fbq('track', 'Lead', {
+          value: finalTotal,
+          currency: 'ARS'
+        });
+        console.log('✅ Meta Pixel disparado para orden #' + finalOrderId);
+      } catch (err) {
+        console.error('Error al disparar Pixel:', err);
+      }
+    }
+
+    // Auto-apertura hacia WhatsApp tras 1 segundo (tiempo suficiente para el beacon de Meta)
+    setTimeout(() => {
+      window.location.href = waUrl;
+    }, 1000);
+  </script>
+</Layout>
