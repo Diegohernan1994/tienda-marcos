@@ -690,6 +690,37 @@ const configJson = JSON.stringify(STORE_CONFIG);
       });
     }
 
+    // Filtrado interactivo por categorías
+    const categoryButtons = document.querySelectorAll('.cat-filter');
+    const productCards = document.querySelectorAll('.product-card');
+
+    categoryButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const selectedCat = btn.getAttribute('data-category');
+
+        // Actualizar estilos activos de los botones
+        categoryButtons.forEach(b => {
+          if (b === btn) {
+            b.classList.add('bg-[#008069]', 'text-white', 'shadow-sm', 'active');
+            b.classList.remove('bg-white', 'text-slate-700', 'border', 'border-slate-200');
+          } else {
+            b.classList.remove('bg-[#008069]', 'text-white', 'shadow-sm', 'active');
+            b.classList.add('bg-white', 'text-slate-700', 'border', 'border-slate-200');
+          }
+        });
+
+        // Filtrar tarjetas de producto
+        productCards.forEach(card => {
+          const cardCat = card.getAttribute('data-category');
+          if (selectedCat === 'all' || cardCat === selectedCat) {
+            card.classList.remove('hidden');
+          } else {
+            card.classList.add('hidden');
+          }
+        });
+      });
+    });
+
     // Eventos abrir modal producto
     document.querySelectorAll('.btn-open-details').forEach(el => {
       el.addEventListener('click', (e) => {
