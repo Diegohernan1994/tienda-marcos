@@ -1064,6 +1064,14 @@ ${shippingText}
         ? "🎁 ¡Envío BONIFICADO SIN COSTO por superar los $100.000!" 
         : "📍 Envío en Córdoba Capital (Dentro de Circunvalación $3.000 / Fuera $5.000)";
 
+      let originTagLine = '';
+      try {
+        const savedAttr = JSON.parse(sessionStorage.getItem('marcos_attribution') || 'null');
+        if (savedAttr && savedAttr.adName) {
+          originTagLine = `\n🏷️ *Origen:* ${savedAttr.adName} (${savedAttr.source})`;
+        }
+      } catch (e) {}
+
       const message = 
 `👋 ¡Hola! Quiero hacer el siguiente pedido:
 
@@ -1075,7 +1083,7 @@ ${itemsText}
 🚚 *ENVÍO EN CÓRDOBA:*
 ${shippingText}
 
-¿Me pasarías los datos para coordinar el pago y el despacho? ¡Muchas gracias!`;
+¿Me pasarías los datos para coordinar el pago y el despacho? ¡Muchas gracias!${originTagLine}`;
 
       const waUrl = `https://api.whatsapp.com/send?phone=${CONFIG.whatsappNumber}&text=${encodeURIComponent(message)}`;
 
@@ -1107,5 +1115,211 @@ ${shippingText}
     }
 
     updateFloatingCart();
+
+    // =========================================================================
+    // TELEMETRÍA EN VIVO + DETECCIÓN DE ORIGEN Y ANUNCIO ESPECÍFICO (META ADS / UTM)
+    // =========================================================================
+    const TRACK_ENDPOINT = window.MARCOS_AGENT_TRACK_URL || 'http://localhost:4567/api/track';
+    const sessionStartMs = Date.now();
+    let sessionClicks = 0;
+    let checkoutCompleted = false;
+    let abandonReported = false;
+
+    function detectVisitorOrigin() {
+      try {
+        const params = new URLSearchParams(window.location.search);
+        const rawAd = params.get('anuncio') || params.get('utm_content') || params.get('ad') || params.get('utm_campaign') || '';
+        const rawSource = params.get('origen') || params.get('utm_source') || '';
+        const hasFbclid = params.has('fbclid');
+        const hasIgshid = params.has('igshid');
+
+        if (rawAd || rawSource || hasFbclid || hasIgshid) {
+          let source = rawSource.replace(/_/g, ' ').trim();
+          if (!source) {
+            if (hasFbclid) source = 'Meta Ads (IG / FB)';
+            else if (hasIgshid) source = 'Instagram';
+            else source = 'Campaña Ads';
+          } else {
+            const sLow = source.toLowerCase();
+            if (sLow === 'ig' || sLow === 'ig ads' || sLow === 'instagram') source = 'Instagram Ads';
+            else if (sLow === 'fb' || sLow === 'fb ads' || sLow === 'facebook') source = 'Facebook Ads';
+            else if (sLow === 'wa' || sLow === 'whatsapp') source = 'WhatsApp / Estado';
+          }
+
+          let adName = rawAd.replace(/_/g, ' ').trim();
+          if (!adName) {
+            adName = hasFbclid ? 'Anuncio Activo Meta Ads' : `Enlace ${source}`;
+          }
+          const adKey = (adName + '-' + source).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+          const attr = { adKey, adName, source };
+          sessionStorage.setItem('marcos_attribution', JSON.stringify(attr));
+          return attr;
+        }
+
+        const existing = sessionStorage.getItem('marcos_attribution');
+        if (existing) {
+          return JSON.parse(existing);
+        }
+
+        const ref = (document.referrer || '').toLowerCase();
+        let source = 'Directo / WhatsApp';
+        let adName = 'Acceso Directo al Catálogo';
+        if (ref.includes('instagram.com')) {
+          source = 'Instagram';
+          adName = 'Perfil / Bio de Instagram';
+        } else if (ref.includes('facebook.com') || ref.includes('fb.com')) {
+          source = 'Facebook';
+          adName = 'Publicación / Página de Facebook';
+        } else if (ref.includes('google.')) {
+          source = 'Google';
+          adName = 'Búsqueda en Google';
+        } else if (ref.includes('tiktok.com')) {
+          source = 'TikTok';
+          adName = 'Perfil / Video TikTok';
+        }
+        const adKey = (adName + '-' + source).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+        const attr = { adKey, adName, source };
+        sessionStorage.setItem('marcos_attribution', JSON.stringify(attr));
+        return attr;
+      } catch (e) {
+        return { adKey: 'directo-catalogo', adName: 'Acceso Directo al Catálogo', source: 'Directo / WhatsApp' };
+      }
+    }
+
+    const visitorAttribution = detectVisitorOrigin();
+
+    function sendTrackEvent(payload) {
+      try {
+        const enrichedPayload = {
+          ...payload,
+          adKey: payload.adKey || visitorAttribution.adKey,
+          adName: payload.adName || visitorAttribution.adName,
+          source: payload.source || visitorAttribution.source
+        };
+        const body = JSON.stringify(enrichedPayload);
+        if (navigator.sendBeacon) {
+          const blob = new Blob([body], { type: 'application/json' });
+          navigator.sendBeacon(TRACK_ENDPOINT, blob);
+        } else {
+          fetch(TRACK_ENDPOINT, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body,
+            keepalive: true
+          }).catch(() => {});
+        }
+      } catch (e) {}
+    }
+
+    // 1. Registrar visualización de la tienda + origen del anuncio
+    const isNewVisit = !sessionStorage.getItem('marcos_visited');
+    try { sessionStorage.setItem('marcos_visited', '1'); } catch (e) {}
+    sendTrackEvent({ event: 'page_view', isNewSession: isNewVisit });
+
+    // 2. Contar todos los clics del usuario en la tienda
+    document.addEventListener('click', (e) => {
+      sessionClicks += 1;
+      const detailBtn = e.target.closest('.btn-open-details');
+      if (detailBtn) {
+        const pid = detailBtn.getAttribute('data-id');
+        const prod = PRODUCTS.find(p => p.id === pid);
+        if (prod) {
+          sendTrackEvent({ event: 'product_view', productId: prod.id, productName: prod.name });
+        }
+      }
+      const addBtn = e.target.closest('.btn-add-cart');
+      if (addBtn) {
+        const pid = addBtn.getAttribute('data-id');
+        const prod = PRODUCTS.find(p => p.id === pid);
+        if (prod) {
+          sendTrackEvent({ event: 'add_to_cart', productId: prod.id, productName: prod.name });
+        }
+      }
+      const directBtn = e.target.closest('.btn-direct-order');
+      if (directBtn) {
+        checkoutCompleted = true;
+        const pid = directBtn.getAttribute('data-id');
+        const prod = PRODUCTS.find(p => p.id === pid);
+        const dur = Math.max(1, Math.round((Date.now() - sessionStartMs) / 1000));
+        if (prod) {
+          sendTrackEvent({
+            event: 'whatsapp_order',
+            productId: prod.id,
+            productName: prod.name,
+            clicks: sessionClicks,
+            durationSec: dur,
+            cartValue: prod.price,
+            cartItems: [{ id: prod.id, name: prod.name }]
+          });
+        }
+      }
+    });
+
+    if (btnCartModalSubmit) {
+      btnCartModalSubmit.addEventListener('click', () => {
+        checkoutCompleted = true;
+        const { transferTotal } = getCartTotals();
+        const dur = Math.max(1, Math.round((Date.now() - sessionStartMs) / 1000));
+        const items = Object.entries(cart).filter(([, q]) => q > 0).map(([id]) => {
+          const p = PRODUCTS.find(x => x.id === id);
+          return { id, name: p ? p.name : id };
+        });
+        sendTrackEvent({
+          event: 'whatsapp_order',
+          clicks: sessionClicks,
+          durationSec: dur,
+          cartValue: transferTotal,
+          cartItems: items
+        });
+      });
+    }
+
+    if (btnSendCartWhatsapp) {
+      btnSendCartWhatsapp.addEventListener('click', () => {
+        checkoutCompleted = true;
+        const { transferTotal } = getCartTotals();
+        const dur = Math.max(1, Math.round((Date.now() - sessionStartMs) / 1000));
+        const items = Object.entries(cart).filter(([, q]) => q > 0).map(([id]) => {
+          const p = PRODUCTS.find(x => x.id === id);
+          return { id, name: p ? p.name : id };
+        });
+        sendTrackEvent({
+          event: 'whatsapp_order',
+          clicks: sessionClicks,
+          durationSec: dur,
+          cartValue: transferTotal,
+          cartItems: items
+        });
+      });
+    }
+
+    // 3. Detectar Permanencia, Número de Clics y Carrito Abandonado al salir
+    window.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'hidden' && !abandonReported) {
+        const dur = Math.max(1, Math.round((Date.now() - sessionStartMs) / 1000));
+        const { totalQty, transferTotal } = getCartTotals();
+        if (totalQty > 0 && !checkoutCompleted) {
+          abandonReported = true;
+          const items = Object.entries(cart).filter(([, q]) => q > 0).map(([id]) => {
+            const p = PRODUCTS.find(x => x.id === id);
+            return { id, name: p ? p.name : id };
+          });
+          sendTrackEvent({
+            event: 'abandoned_cart',
+            clicks: sessionClicks,
+            durationSec: dur,
+            cartValue: transferTotal,
+            cartItems: items
+          });
+        } else if (!checkoutCompleted) {
+          abandonReported = true;
+          sendTrackEvent({
+            event: 'session_end',
+            clicks: sessionClicks,
+            durationSec: dur
+          });
+        }
+      }
+    });
   </script>
 </Layout>

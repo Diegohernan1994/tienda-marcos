@@ -21,3 +21,7 @@ pnpm-debug.log*
 # Archivos del sistema operativo
 .DS_Store
 Thumbs.db
+
+# Agente comercial en repositorio separado (agente-marcos)
+agente-comercial-saas/
+reels_publicidad/
