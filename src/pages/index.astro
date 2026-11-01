@@ -5,6 +5,8 @@ import { STORE_CONFIG } from '../data/config.js';
 
 const productsJson = JSON.stringify(PRODUCTS);
 const configJson = JSON.stringify(STORE_CONFIG);
+const agentTrackUrl = import.meta.env.PUBLIC_AGENT_TRACK_URL || (import.meta.env.DEV ? 'http://localhost:4567/api/track' : '');
+if (agentTrackUrl && !import.meta.env.DEV && new URL(agentTrackUrl).protocol !== 'https:') throw new Error('PUBLIC_AGENT_TRACK_URL debe usar HTTPS en producción');
 ---
 
 <Layout title={`${STORE_CONFIG.name} | Catálogo Oficial`}>
@@ -578,7 +580,7 @@ const configJson = JSON.stringify(STORE_CONFIG);
   </div>
 
   <!-- SCRIPT DE INTERACCIÓN, POPUP DE CARRITO Y WHATSAPP -->
-  <script is:inline define:vars={{ productsJson, configJson }}>
+  <script is:inline define:vars={{ productsJson, configJson, agentTrackUrl }}>
     const PRODUCTS = JSON.parse(productsJson);
     const CONFIG = JSON.parse(configJson);
 
@@ -1119,7 +1121,7 @@ ${shippingText}
     // =========================================================================
     // TELEMETRÍA EN VIVO + DETECCIÓN DE ORIGEN Y ANUNCIO ESPECÍFICO (META ADS / UTM)
     // =========================================================================
-    const TRACK_ENDPOINT = window.MARCOS_AGENT_TRACK_URL || 'http://localhost:4567/api/track';
+    const TRACK_ENDPOINT = agentTrackUrl;
     const sessionStartMs = Date.now();
     let sessionClicks = 0;
     let checkoutCompleted = false;
@@ -1187,11 +1189,22 @@ ${shippingText}
     }
 
     const visitorAttribution = detectVisitorOrigin();
+    const campaignParam = new URLSearchParams(window.location.search).get('utm_campaign');
+    if (campaignParam) sessionStorage.setItem('marcos_campaign', campaignParam);
+    let trackingSessionId = sessionStorage.getItem('marcos_tracking_session');
+    if (!trackingSessionId) {
+      trackingSessionId = crypto.randomUUID();
+      sessionStorage.setItem('marcos_tracking_session', trackingSessionId);
+    }
 
     function sendTrackEvent(payload) {
+      if (!TRACK_ENDPOINT) return;
       try {
         const enrichedPayload = {
           ...payload,
+          eventId: crypto.randomUUID(),
+          sessionId: trackingSessionId,
+          campaign: sessionStorage.getItem('marcos_campaign') || '',
           adKey: payload.adKey || visitorAttribution.adKey,
           adName: payload.adName || visitorAttribution.adName,
           source: payload.source || visitorAttribution.source
@@ -1243,7 +1256,7 @@ ${shippingText}
         const dur = Math.max(1, Math.round((Date.now() - sessionStartMs) / 1000));
         if (prod) {
           sendTrackEvent({
-            event: 'whatsapp_order',
+            event: 'whatsapp_click',
             productId: prod.id,
             productName: prod.name,
             clicks: sessionClicks,
@@ -1265,7 +1278,7 @@ ${shippingText}
           return { id, name: p ? p.name : id };
         });
         sendTrackEvent({
-          event: 'whatsapp_order',
+          event: 'whatsapp_click',
           clicks: sessionClicks,
           durationSec: dur,
           cartValue: transferTotal,
@@ -1284,7 +1297,7 @@ ${shippingText}
           return { id, name: p ? p.name : id };
         });
         sendTrackEvent({
-          event: 'whatsapp_order',
+          event: 'whatsapp_click',
           clicks: sessionClicks,
           durationSec: dur,
           cartValue: transferTotal,

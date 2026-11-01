@@ -17,7 +17,7 @@ const configJson = JSON.stringify(STORE_CONFIG);
         </div>
 
         <span class="inline-block mt-3 bg-emerald-50 text-emerald-800 text-[11px] font-bold px-3 py-0.5 rounded-full border border-emerald-200">
-          CONVERSIÓN REGISTRADA
+          ABRIENDO WHATSAPP
         </span>
 
         <h1 class="text-xl font-extrabold text-slate-900 mt-2">
@@ -122,27 +122,20 @@ const configJson = JSON.stringify(STORE_CONFIG);
       btnWhatsappRedirect.href = waUrl;
     }
 
-    // DISPARO DE EVENTOS DE META PIXEL
-    if (typeof fbq === 'function') {
+    // La salida a WhatsApp es un clic, no una venta ni un lead confirmado.
+    const clickKey = 'marcos_wa_click_' + finalOrderId;
+    let clickRecorded = false;
+    try { clickRecorded = sessionStorage.getItem(clickKey) === '1'; } catch (e) {}
+    if (!clickRecorded && typeof fbq === 'function') {
       try {
-        fbq('track', 'Purchase', {
-          content_name: 'Almohadas Viscoelásticas',
-          content_type: 'product',
-          value: finalTotal,
-          currency: 'ARS',
-          order_id: finalOrderId
-        });
-        fbq('track', 'Lead', {
-          value: finalTotal,
-          currency: 'ARS'
-        });
-        console.log('✅ Meta Pixel disparado para orden #' + finalOrderId);
+        fbq('trackCustom', 'WhatsAppClick', { order_id: finalOrderId });
+        try { sessionStorage.setItem(clickKey, '1'); } catch (e) {}
       } catch (err) {
-        console.error('Error al disparar Pixel:', err);
+        console.error('No se pudo registrar el clic a WhatsApp:', err);
       }
     }
 
-    // Auto-apertura hacia WhatsApp tras 1 segundo (tiempo suficiente para el beacon de Meta)
+    // Auto-apertura hacia WhatsApp tras 1 segundo (sin confirmar envío de mensaje ni compra)
     setTimeout(() => {
       window.location.href = waUrl;
     }, 1000);
